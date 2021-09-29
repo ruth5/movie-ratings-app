@@ -37,12 +37,36 @@ def show_movie(movie_id):
 
 @app.route('/users')
 def all_users():
-    pass
+    """Show all users in the datbase."""
+    all_users = crud.return_all_users()
 
-@app.route('/users/<email>')
-def show_user(email):
-    pass
+    return render_template('all_users.html', all_users=all_users)
 
+@app.route('/users/<user_id>')
+def show_user(user_id):
+    """Show details on a particular user."""
+
+    user_details = crud.get_user_by_id(user_id)
+
+    return render_template('user_details.html', user = user_details)
+
+@app.route('/users', methods = ['POST'])
+def retrieve_login_data():
+    """Register a user with a email and password."""
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    print(20 * '*')
+    print(f'user is {crud.get_user_by_email("user0@test.com")}')
+    print(20 * '*')
+
+    if crud.get_user_by_email(email):
+        flash("Your account already exists.")
+    else:
+        crud.create_user(email, password)
+        flash("Thanks for making an account.")
+    
+    return redirect("/")
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)

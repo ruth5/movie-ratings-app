@@ -32,6 +32,16 @@ def get_movie_by_id(movie_id):
 
     return Movie.query.get(movie_id)
 
+def return_all_users():
+    """Return all users in the database."""
+
+    return User.query.all()
+
+def get_user_by_id(user_id):
+    """Return the user with that ID"""
+
+    return User.query.get(user_id)
+
 def create_rating(user, movie, score):
     """Create and return a new rating."""
 
@@ -41,6 +51,11 @@ def create_rating(user, movie, score):
     db.session.commit()
 
     return rating
+
+def get_user_by_email(email):
+    """Returns a user with that email if it exists, otherwise return None."""
+    
+    return User.query.get(email)
     
 
 if __name__ == '__main__':
