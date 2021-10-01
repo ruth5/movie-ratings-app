@@ -48,7 +48,10 @@ def show_user(user_id):
 
     user_details = crud.get_user_by_id(user_id)
 
-    return render_template('user_details.html', user = user_details)
+    rating_details = crud.get_ratings_by_user(user_id)
+
+    return render_template('user_details.html', user = user_details,
+                                                ratings = rating_details)
 
 @app.route('/users', methods = ['POST'])
 def retrieve_login_data():
@@ -67,6 +70,59 @@ def retrieve_login_data():
         flash("Thanks for making an account.")
     
     return redirect("/")
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    """Login user into account"""
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = crud.get_user_by_email(email)
+    if user:
+        if password == user.password:
+            session['logged_user_id'] = user.user_id
+            flash(f"{session['logged_user_id']}, you're loggged in!")
+        else:
+            flash("Your password doesn't match our records")
+    else:
+        flash('No account with that email')
+    
+    return redirect('/')
+
+@app.route('/movies/<movie_id>', methods = ['POST'])
+def create_rating_by_user(movie_id):
+    """Gets the rating info from the movie details page and 
+    adds it to the database, with the user and movie info"""
+
+    rating = request.form['movie_rating']
+    print(20 * '*')
+    print(type(rating))
+    print(20 * '*')
+    rating = int(rating)
+    print(rating)
+    print(type(rating))
+    print(20 * '*')
+    user_id = int(session['logged_user_id'])
+    print(user_id)
+    print(type(user_id))
+    print(20 * '*')
+    movie_id = int(movie_id)
+    print(movie_id)
+    print(type(movie_id))
+    print(20 * '*')
+
+    movie = crud.get_movie_by_id(movie_id)
+    user = crud.get_user_by_id(user_id)
+
+    crud.create_rating(user, movie, rating)
+
+    flash('Thank you for rating!')
+    return redirect(f'/movies/{movie_id}')
+
+
+
+
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)

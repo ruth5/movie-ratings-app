@@ -9,4 +9,11 @@
   {{ user.email }}
 </p>
 
+<ul>
+  {% for rating in ratings %}
+    <li>Movie: {{ rating.movie.title }}</li>
+    <li>Score: {{rating.score}}</li>
+  {% endfor %}
+</ul>
+
 {% endblock %}

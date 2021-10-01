@@ -55,7 +55,14 @@ def create_rating(user, movie, score):
 def get_user_by_email(email):
     """Returns a user with that email if it exists, otherwise return None."""
     
-    return User.query.get(email)
+    return User.query.filter_by(email=email).first()
+
+def get_ratings_by_user(user_id):
+    """Return a list of ratings on user profile."""
+
+    return Rating.query.filter_by(user_id=user_id).all()
+
+
     
 
 if __name__ == '__main__':

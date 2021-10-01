@@ -9,5 +9,20 @@
   {{ movie.overview }}
 </p>
 
+<form action="/movies/{{ movie.movie_id }}" method="POST">
+  <div>Select Your Rating</div>
+  <input type="radio" name="movie_rating" value="1">
+    <label>1</label>
+  <input type="radio" name="movie_rating" value="2">
+    <label>2</label>
+  <input type="radio" name="movie_rating" value="3">
+    <label>3</label>
+  <input type="radio" name="movie_rating" value="4">
+    <label>4</label>
+  <input type="radio" name="movie_rating" value="5">
+    <label>5</label>
+  <input type="submit">
+</form>
+
 <img src="{{ movie.poster_path }}">
 {% endblock %}
